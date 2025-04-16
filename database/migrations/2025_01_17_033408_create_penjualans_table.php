@@ -23,7 +23,6 @@ class CreatePenjualansTable extends Migration
             $table->decimal('Pembayaran', 10,2);
             $table->decimal('Kembalian', 10,2);
 
-            $table->unsignedBigInteger('deleted_by')->nullable();
             $table->softDeletes();
             
             $table->timestamps();

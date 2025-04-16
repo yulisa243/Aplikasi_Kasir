@@ -19,7 +19,6 @@ class CreateProduksTable extends Migration
             $table->decimal('Harga', 10,2);
             $table->integer('Stok');
             $table->date('exp_date'); 
-            $table->decimal('diskon', 5, 2)->default(0); 
             $table->unsignedBigInteger('CategoryID');
             $table->unsignedBigInteger('SuplierID');           
             $table->timestamps();

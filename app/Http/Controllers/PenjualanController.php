@@ -24,6 +24,7 @@ class PenjualanController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('TanggalPenjualan', 'like', "%{$search}%")
                     ->orWhere('TotalHarga', 'like', "%{$search}%")
+                    ->orWhere('Kasir', 'like', "%{$search}%")  // Menambahkan pencarian untuk Kasir
                     ->orWhereHas('pelanggan', function ($q) use ($search) {
                         $q->where('NamaPelanggan', 'like', "%{$search}%");
                     });

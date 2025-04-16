@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Penjualan</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -134,7 +135,7 @@
 
             <!-- Input Pencarian di kanan -->
             <form action="{{ route('penjualans.index') }}" method="GET" class="d-flex">
-    <input type="text" name="search" class="form-control me-2" placeholder="Cari Pelanggan" value="{{ request('search') }}">
+    <input type="text" name="search" class="form-control me-2" placeholder="Cari Penjualan" value="{{ request('search') }}">
     <button type="submit" class="btn btn-primary">Cari</button>
 </form>
         </div>
@@ -147,9 +148,12 @@
                         <thead>
                             <tr>
                                             <th>No</th>
-                                            <th>Nama Pelanggan</th>
+                                            <th>Pelanggan</th>
+                                            <th>Kasir</th>
                                             <th>Tanggal Penjualan</th>
                                             <th>Total Harga</th>
+                                            <th>Pembayaran</th>
+                                            <th>kembalian</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -158,9 +162,12 @@
                                             <tr>
                                                 <td>{{ $penjualan->PenjualanID }}</td>
                                                 <td>{{ optional($penjualan->pelanggan)->NamaPelanggan ?? '-' }}</td>
+                                                <td>{{ $penjualan->Kasir }}</td>
                                                 <td>{{ $penjualan->TanggalPenjualan }}</td>
                                                 <td>{{ number_format($penjualan->TotalHarga, 2, ',', '.') }}</td>
-                                                <td>
+                                                <td>Rp {{ number_format($penjualan->Pembayaran, 0, ',', '.') }}</td>
+            <td>Rp {{ number_format($penjualan->Pembayaran - $penjualan->TotalHarga, 0, ',', '.') }}</td>
+            <td>
     <div class="btn-group">
         <a href="{{ route('penjualans.show', $penjualan->PenjualanID) }}" class="btn btn-info btn-sm" title="Lihat Detail">
             <i class="fas fa-eye"></i>

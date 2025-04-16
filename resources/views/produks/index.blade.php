@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Produk</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
@@ -180,12 +181,13 @@
                                             </td>
                                             <td>{{ optional($produk->suplier)->SuplierNama ?? '-' }}</td>
                                             <td>{{ optional($produk->category)->CategoryName ?? '-' }}</td>
-                                            <td class="{{ \Carbon\Carbon::parse($produk->exp_date)->diffInDays(now()) <= 7 ? 'stok-merah' : '' }}">
-                                                {{ $produk->exp_date ? date('d-m-Y', strtotime($produk->exp_date)) : '-' }}
-                                                @if(\Carbon\Carbon::parse($produk->exp_date)->diffInDays(now()) <= 7)
+                                            <td class="{{ \Carbon\Carbon::parse($produk->exp_date)->diffInDays(\Carbon\Carbon::today()) <= 7 ? 'stok-merah' : '' }}">
+                                                {{ $produk->exp_date ? \Carbon\Carbon::parse($produk->exp_date)->format('d-m-Y') : '-' }}
+                                                @if(\Carbon\Carbon::parse($produk->exp_date)->diffInDays(\Carbon\Carbon::today()) <= 7)
                                                     <span class="badge badge-danger ml-2">Segera Kedaluwarsa!</span>
                                                 @endif
                                             </td>
+                                            
                                             <td class="d-flex justify-content-center gap-1">
     <a href="{{ route('produks.edit', $produk->ProdukID) }}" class="btn btn-warning btn-sm" title="Edit">
         <i class="fas fa-edit"></i>

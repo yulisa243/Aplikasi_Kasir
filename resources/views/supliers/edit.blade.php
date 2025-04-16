@@ -1,4 +1,4 @@
-@extends('admin.template')
+@extends('layout_admin.sidebar')
 
 <!DOCTYPE html>
 <html lang="id">

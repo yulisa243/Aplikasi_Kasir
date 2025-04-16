@@ -209,11 +209,11 @@
 
     
     <div class="container">
-    <div class="header">
-            <p><strong>{{ $profile->nama_toko ?? 'Nama Toko Tidak Tersedia' }}</strong></p>
-    <p class="alamat">{{ $profile->alamat ?? 'Alamat tidak tersedia' }}</p>
-    <p class="alamat">Telp: {{ $profile->no_telp ?? '-' }}</p>
-</div>
+        <div class="header">
+            <p>{{ $profile->nama_toko ?? 'Nama Toko Tidak Tersedia' }}</p>
+            <p class="alamat">{{ $profile->alamat ?? 'Alamat tidak tersedia' }}</p>
+            <p class="alamat">Telp: {{ $profile->no_telp ?? '-' }}</p>
+        </div>
 
     </br>
         <div class="content">

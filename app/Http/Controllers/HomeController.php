@@ -20,8 +20,14 @@ class HomeController extends Controller
     // Ambil produk dengan stok rendah
     $produkStokRendah = Produk::where('Stok', '<=', 5)->get();
 
-    // Ambil produk yang akan kedaluwarsa dalam 7 hari
-    $produkKedaluwarsa = Produk::whereDate('exp_date', '<=', Carbon::now()->addDays(7))->get();
+    // Definisikan satu kali saja
+    $hariIni = Carbon::today(); // atau pakai Carbon::now() kalau butuh waktu juga
+
+    // Ambil produk yang akan kedaluwarsa dalam 7 hari dari hari ini
+    $produkKedaluwarsa = Produk::whereNotNull('exp_date')
+    ->whereDate('exp_date', '<=', $hariIni->copy()->addDays(7))
+    ->whereDate('exp_date', '>=', $hariIni)
+    ->get();
 
 
      // Ambil 10 transaksi terbaru dari tabel `penjualans`
@@ -72,7 +78,7 @@ $profile = Profile::first();
 
 
 
-    return view('home', compact('produkStokRendah', 'produkKedaluwarsa','transaksiTerakhir','kasir','jumlahKasir','bestSellers','labels', 'data','totalPendapatan','profile'));
+    return view('home', compact('produkStokRendah', 'produkKedaluwarsa','transaksiTerakhir','kasir','jumlahKasir','bestSellers','labels', 'data','totalPendapatan','profile','hariIni'));
 }
 }
 

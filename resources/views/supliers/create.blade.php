@@ -1,4 +1,4 @@
-@extends('admin.template')
+@extends('layout_admin.sidebar')
 
 <!DOCTYPE html>
 <html lang="id">
@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Supplier</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome -->
@@ -73,14 +74,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold"></a>
-    <div class="d-flex align-items-center ms-auto">
-      <span class="me-3"> <strong>{{ Auth::user()->name }}</strong></span>
-    </div>
-  </div>
-</nav>
+
 
 
 @if($errors->any())

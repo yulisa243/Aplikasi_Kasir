@@ -47,8 +47,9 @@
                 <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="text-center">
-                        <img src="{{ optional($profile)->logo ? asset('storage/' . $profile->logo) : asset('images/default-logo.png') }}" 
-                             alt="Logo Toko" class="profile-img">
+                        <<img src="{{ optional($profile)->logo ? asset('storage/' . $profile->logo) : asset('images/default-logo.png') }}"
+                        alt="Logo Toko" class="profile-img">
+                   
                     </div>
                     
                     <div class="form-group mt-3">
@@ -58,12 +59,12 @@
                     
                     <div class="form-group">
                         <label>Alamat</label>
-                        <textarea name="alamat" class="form-control" required>{{ $profile->alamat }}</textarea>
+                        <textarea name="alamat" class="form-control" required>{{ $profile->alamat ?? '' }}</textarea>
                     </div>
                     
                     <div class="form-group">
                         <label>No. Telepon</label>
-                        <input type="text" name="no_telp" class="form-control" value="{{ $profile->no_telp }}" required>
+                        <input type="text" name="no_telp" class="form-control" value="{{ $profile->no_telp ?? '' }}" required>
                     </div>
 
                     <div class="form-group">

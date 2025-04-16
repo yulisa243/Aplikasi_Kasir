@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Produk</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
     <style>
@@ -28,18 +29,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold"></a>
-    <div class="d-flex align-items-center ms-auto">
-      @if(Auth::check())
-        <span class="me-3"><strong>{{ Auth::user()->name }}</strong></span>
-      @else
-        <span class="me-3">Selamat datang, <strong>Pengguna Tidak Dikenal</strong></span>
-      @endif
-    </div>
-  </div>
-</nav>
+
 
 <div class="container mt-4">
     <div class="row">

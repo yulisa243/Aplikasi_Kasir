@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Laporan Penjualan</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
     <style>
         
@@ -68,7 +70,19 @@
         
     </style>
 </head>
-
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold"></a>
+  
+      <div class="d-flex align-items-center ms-auto">
+        @if(Auth::check())  <!-- Mengecek apakah pengguna sudah login -->
+          <span class="me-3"><strong>{{ Auth::user()->name }}</strong></span>
+        @else
+          <span class="me-3">Selamat datang, <strong>Pengguna Tidak Dikenal</strong></span>
+        @endif
+      </div>
+    </div>
+  </nav>
 <body>
 <div class="container mt-4">
     <div class="card">

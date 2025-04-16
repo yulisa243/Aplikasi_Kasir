@@ -54,32 +54,37 @@ class ProfileController extends Controller
 }
 
 
-    public function update(Request $request)
-    {
-        $request->validate([
-            'nama_toko' => 'required|string|max:255',
-            'alamat' => 'required|string',
-            'no_telp' => 'required|string|max:15',
-            'logo' => 'nullable|image|max:2048'
-        ]);
-    
-        $profile = Profile::first();
-    
-        // Perbarui Data Profil
-        $profile->nama_toko = $request->nama_toko;
-        $profile->alamat = $request->alamat;
-        $profile->no_telp = $request->no_telp;
-    
-        // Jika ada file logo baru, simpan dan perbarui path
-        if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('logos', 'public');
-            $profile->logo = $path;
-        }
-    
-        $profile->save();
-    
-        return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui');
+public function update(Request $request)
+{
+    $request->validate([
+        'nama_toko' => 'required|string|max:255',
+        'alamat' => 'required|string',
+        'no_telp' => 'required|string|max:15',
+        'logo' => 'nullable|image|max:2048'
+    ]);
+
+    // Ambil data profile pertama atau buat baru jika belum ada
+    $profile = Profile::first();
+
+    if (!$profile) {
+        $profile = new Profile();
     }
+
+    // Perbarui Data Profil
+    $profile->nama_toko = $request->nama_toko;
+    $profile->alamat = $request->alamat;
+    $profile->no_telp = $request->no_telp;
+
+    // Jika ada file logo baru, simpan dan perbarui path
+    if ($request->hasFile('logo')) {
+        $path = $request->file('logo')->store('logos', 'public');
+        $profile->logo = $path;
+    }
+
+    $profile->save();
+
+    return redirect()->route('profile.index')->with('success', 'Profil berhasil diperbarui');
+}
 
     
     public function boot()

@@ -1,4 +1,4 @@
-@extends(auth()->user()->role == 'admin' ? 'admin.template' : 'kasir.template')
+@extends(auth()->user()->role == 'admin' ? 'layout_admin.sidebar' : 'layout_kasir.sidebar')
 
 <!DOCTYPE html>
 <html lang="id">
@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Pelanggan</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Savelle.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome -->

@@ -199,28 +199,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $produkList = collect($produkStokRendah)->merge($produkKedaluwarsa)->unique('NamaProduk');
-                        $hariIni = \Carbon\Carbon::now();
-                        $no = 1;
-                    @endphp
-                    @foreach($produkList as $produk)
-                        @php
-                            $stokClass = $produk->Stok <= 5 ? 'fw-bold' : 'text-black';
-                            $expClass = $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? 'fw-bold' : 'text-black';
-                        @endphp
-                        <tr style="background-color: #D9D9D9; color: black;">
-                            <td>{{ $no++ }}</td>
-                            <td class="text-start fw-bold">{{ $produk->NamaProduk }}</td>
-                            <td class="{{ $stokClass }}" style="color: {{ $produk->Stok <= 5 ? '#D60000' : 'black' }};">
-                                {{ $produk->Stok }}
-                            </td>
-                            <td class="{{ $expClass }}" style="color: {{ $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? '#D60000' : 'black' }};">
-                                {{ $produk->exp_date ? \Carbon\Carbon::parse($produk->exp_date)->format('d-m-Y') : '-' }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                  @php
+                      $produkList = collect($produkStokRendah)->merge($produkKedaluwarsa)->unique('NamaProduk');
+                      $hariIni = \Carbon\Carbon::now();
+                      $no = 1;
+                  @endphp
+                  @foreach($produkList as $produk)
+                      @php
+                          $stokClass = $produk->Stok <= 5 ? 'fw-bold' : 'text-black';
+                          $expClass = $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? 'fw-bold' : 'text-black';
+                      @endphp
+                      <tr style="background-color: #D9D9D9; color: black;">
+                          <td>{{ $no++ }}</td>
+                          <td class="text-start fw-bold">{{ $produk->NamaProduk }}</td>
+                          <td class="{{ $stokClass }}" style="color: {{ $produk->Stok <= 5 ? '#D60000' : 'black' }};">
+                              {{ $produk->Stok }}
+                          </td>
+                          <td class="{{ $expClass }}" style="color: {{ $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? '#D60000' : 'black' }};">
+                              {{ $produk->exp_date ? \Carbon\Carbon::parse($produk->exp_date)->format('d-m-Y') : '-' }}
+                          </td>
+                      </tr>
+                  @endforeach
+              </tbody>
+              
             </table>
         </div>
     </div>

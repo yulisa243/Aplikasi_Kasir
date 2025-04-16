@@ -21,6 +21,7 @@ class ProdukController extends Controller
                 return $query->where('NamaProduk', 'like', "%{$search}%")
                              ->orWhere('Harga', 'like', "%{$search}%")
                              ->orWhere('stok', 'like', "%{$search}%") // Sesuaikan dengan field di DB
+                             ->orWhereDate('exp_date', 'like', "%{$search}%") // Gunakan orWhereDate jika field date
                              ->orWhereHas('category', function ($q) use ($search) {
                                  $q->where('CategoryName', 'like', "%{$search}%"); // Perbaikan field kategori
                              })
@@ -30,6 +31,13 @@ class ProdukController extends Controller
             })
             ->latest() // Lebih ringkas dibanding orderBy('created_at', 'desc')
             ->get();
+
+                // Ambil produk yang akan kedaluwarsa dalam 7 hari
+                $produkKedaluwarsa = Produk::whereNotNull('exp_date')
+                ->whereDate('exp_date', '<=', Carbon::today()->addDays(7))
+                ->whereDate('exp_date', '>=', Carbon::today())
+                ->get();
+            
 
         return view('produks.index', compact('produks'));
     }

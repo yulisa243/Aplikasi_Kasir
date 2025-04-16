@@ -31,14 +31,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold"></a>
-    <div class="d-flex align-items-center ms-auto">
-      <span class="me-3"> <strong>{{ Auth::user()->name }}</strong></span>
-    </div>
-  </div>
-</nav>
+
 
 @if($errors->any())
     <div class="alert alert-danger">
