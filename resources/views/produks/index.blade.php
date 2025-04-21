@@ -166,7 +166,10 @@
                                 <th>Category</th>
                                 <th>Tanggal Kadaluarsa</th>
 
+                                @if(auth()->user()->role === 'admin')
                                 <th>Aksi</th>
+                            @endif
+                            
                             </tr>
                         </thead>
                         <tbody>
@@ -188,7 +191,8 @@
                                                 @endif
                                             </td>
                                             
-                                            <td class="d-flex justify-content-center gap-1">
+                                            @if(auth()->user()->role === 'admin')
+<td class="d-flex justify-content-center gap-1">
     <a href="{{ route('produks.edit', $produk->ProdukID) }}" class="btn btn-warning btn-sm" title="Edit">
         <i class="fas fa-edit"></i>
     </a>
@@ -200,6 +204,9 @@
         </button>
     </form>
 </td>
+@endif
+
+                                            
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -175,169 +175,207 @@
 <!-- end navbar -->
 
 <!-- content -->
+<div class="container mt-4">
+  <div class="row">
+      <!-- KOLOM KIRI: TABEL PERINGATAN + GRAFIK PENJUALAN -->
+      <div class="col-md-8">
+          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'user')
+              @if($produkStokRendah->isNotEmpty() || $produkKedaluwarsa->isNotEmpty())
+                  <div class="card border-danger shadow-lg mb-3">
+                      <div class="card-header text-white text-center" style="background-color: #FF8000;">
+                          <h4 class="mb-0"><strong>⚠ PERHATIAN: STOK RENDAH & PRODUK KEDALUWARSA!</strong></h4>
+                      </div>
+                      <div class="card-body p-3">
+                          <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                              <table class="table table-bordered table-striped text-center">
+                                  <thead class="text-white" style="background-color: #FF8000;">
+                                      <tr>
+                                          <th>No</th>
+                                          <th>Nama Barang</th>
+                                          <th>Jumlah</th>
+                                          <th>Kedaluwarsa</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      @php
+                                          $produkList = collect($produkStokRendah)->merge($produkKedaluwarsa)->unique('NamaProduk');
+                                          $hariIni = \Carbon\Carbon::now();
+                                          $no = 1;
+                                      @endphp
+                                      @foreach($produkList as $produk)
+                                          @php
+                                              $stokClass = $produk->Stok <= 5 ? 'fw-bold' : 'text-black';
+                                              $expClass = $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? 'fw-bold' : 'text-black';
+                                          @endphp
+                                          <tr style="background-color: #D9D9D9; color: black;">
+                                              <td>{{ $no++ }}</td>
+                                              <td class="text-start fw-bold">{{ $produk->NamaProduk }}</td>
+                                              <td class="{{ $stokClass }}" style="color: {{ $produk->Stok <= 5 ? '#D60000' : 'black' }};">
+                                                  {{ $produk->Stok }}
+                                              </td>
+                                              <td class="{{ $expClass }}" style="color: {{ $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? '#D60000' : 'black' }};">
+                                                  {{ $produk->exp_date ? \Carbon\Carbon::parse($produk->exp_date)->format('d-m-Y') : '-' }}
+                                              </td>
+                                          </tr>
+                                      @endforeach
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              @endif
+          @endif
 
-        <!-- PERINGATAN -->
-        <div class="container mt-4">
-    <div class="row">
-        <!-- KOLOM KIRI: TABEL PERINGATAN + GRAFIK PENJUALAN -->
-        <div class="col-md-8">
-            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'user')
-                @if($produkStokRendah->isNotEmpty() || $produkKedaluwarsa->isNotEmpty())
-                <div class="card border-danger shadow-lg mb-3">
-    <div class="card-header text-white text-center" style="background-color: #FF8000;">
-        <h4 class="mb-0"><strong>⚠ PERHATIAN: STOK RENDAH & PRODUK KEDALUWARSA!</strong></h4>
-    </div>
-    <div class="card-body p-3">
-        <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-            <table class="table table-bordered text-center">
-                <thead class="text-white" style="background-color: #FF8000;">
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Barang</th>
-                        <th>Jumlah</th>
-                        <th>Kedaluwarsa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  @php
-                      $produkList = collect($produkStokRendah)->merge($produkKedaluwarsa)->unique('NamaProduk');
-                      $hariIni = \Carbon\Carbon::now();
-                      $no = 1;
-                  @endphp
-                  @foreach($produkList as $produk)
-                      @php
-                          $stokClass = $produk->Stok <= 5 ? 'fw-bold' : 'text-black';
-                          $expClass = $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? 'fw-bold' : 'text-black';
-                      @endphp
-                      <tr style="background-color: #D9D9D9; color: black;">
-                          <td>{{ $no++ }}</td>
-                          <td class="text-start fw-bold">{{ $produk->NamaProduk }}</td>
-                          <td class="{{ $stokClass }}" style="color: {{ $produk->Stok <= 5 ? '#D60000' : 'black' }};">
-                              {{ $produk->Stok }}
-                          </td>
-                          <td class="{{ $expClass }}" style="color: {{ $produk->exp_date && \Carbon\Carbon::parse($produk->exp_date)->diffInDays($hariIni) <= 7 ? '#D60000' : 'black' }};">
-                              {{ $produk->exp_date ? \Carbon\Carbon::parse($produk->exp_date)->format('d-m-Y') : '-' }}
-                          </td>
-                      </tr>
-                  @endforeach
-              </tbody>
+          @if(Auth::user()->role === 'admin')
+              <!-- GRAFIK PENJUALAN (Hanya untuk Admin) -->
+              <div class="card shadow-lg border-0">
+                  <div class="card-header" style="background-color: #5D87FF; text-align: center;">
+                      <h5 class="mb-0 text-white">Grafik Penjualan</h5>
+                  </div>
+                  <div class="card-body">
+                      <canvas id="chartPenjualan" style="width: 100%; height: 300px;"></canvas>
+                  </div>
+              </div>
+          @endif
+      </div>
+
+      <!-- KOLOM KANAN -->
+      <div class="col-md-4">
+          @if(Auth::user()->role === 'admin' || Auth::user()->role === 'user')
+              <!-- BEST SELLER (Bisa diakses oleh Admin & User) -->
+              <div class="card mb-3 shadow-lg">
+                  <div class="card-header text-center text-white" style="background-color: #5D87FF;">
+                      <h5 class="mb-0" style="color: white;">Best Seller</h5>
+                  </div>
+                  <div class="card-body p-3">
+                      <table class="table table-hover table-bordered">
+                          <thead class="table-secondary">
+                              <tr>
+                                  <th>Nama Produk</th>
+                                  <th class="text-center">Total Terjual</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach ($bestSellers as $item)
+                                  <tr>
+                                      <td>{{ $item->NamaProduk }}</td>
+                                      <td class="text-center">
+                                          <span class="badge text-white" style="background-color: #5D87FF;">
+                                              {{ $item->total_terjual }} terjual
+                                          </span>
+                                      </td>
+                                  </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          @endif
+
+          @if(Auth::user()->role === 'admin')
+              <!-- KELOLA KASIR (Hanya untuk Admin) -->
+              <div class="card text-center shadow-lg border-0 mb-3">
+                  <div class="card-body">
+                      <i class="fas fa-user-tie fa-3x text-info mb-3"></i> 
+                      <h4 class="text-info">{{ $jumlahKasir }} Kasir</h4> 
+                  </div>
+                  <div class="card-footer bg-primary">
+                      <a href="{{ route('kassir.index') }}" class="text-white fw-bold">Kelola Kasir</a>
+                  </div>
+              </div>
+
+              <!-- TOTAL SELURUH TRANSAKSI (Hanya untuk Admin) -->
+              <div class="card text-center mb-3">
+                  <div class="card-body">
+                      <h5 class="card-title">Total Pendapatan Seluruh Transaksi</h5>
+                      <h3 class="font-weight-bold text-success">
+                          Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
+                      </h3>
+                  </div>
+              </div>
+          @endif
+
+          <!-- VALIDASI USER BELUM DIAKTIFKAN -->
+          @if(Auth::user()->role === 'admin')
+              <div class="card mt-4">
+                <div class="card-header bg-warning text-center">
+                  <h6 class="mb-0 text-white">Daftar User Belum Diaktifkan</h6>
+              </div>
               
-            </table>
-        </div>
-    </div>
-</div>
-
-                @endif
-            @endif
-
-            @if(Auth::user()->role === 'admin')
-                <!-- GRAFIK PENJUALAN (Hanya untuk Admin) -->
-                <div class="card shadow-lg border-0">
-    <div class="card-header" style="background-color: #5D87FF; text-align: center;">
-        <h5 class="mb-0 text-white">Grafik Penjualan</h5>
-    </div>
-    <div class="card-body">
-        <canvas id="chartPenjualan" style="width: 100%; height: 300px;"></canvas>
-    </div>
-</div>
-            @endif
-        </div>
-
-        <!-- KOLOM KANAN -->
-        <div class="col-md-4">
-            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'user')
-                <!-- BEST SELLER (Bisa diakses oleh Admin & User) -->
-                <div class="card mb-3 shadow-lg">
-    <div class="card-header text-center text-white" style="background-color: #5D87FF;">
-    <h5 class="mb-0" style="color: white;">Best Seller</h5>
-    </div>
-    <div class="card-body p-3">
-        <table class="table table-hover table-bordered">
-            <thead class="table-secondary">
-                <tr>
-                    <th>Nama Produk</th>
-                    <th class="text-center">Total Terjual</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($bestSellers as $item)
-                    <tr>
-                        <td>{{ $item->NamaProduk }}</td>
-                        <td class="text-center">
-                            <span class="badge text-white" style="background-color: #5D87FF;">
-                                {{ $item->total_terjual }} terjual
-                            </span>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-            @endif
-
-            @if(Auth::user()->role === 'admin')
-                <!-- KELOLA KASIR (Hanya untuk Admin) -->
-                <div class="card text-center shadow-lg border-0">
-                    <div class="card-body">
-                        <i class="fas fa-user-tie fa-3x text-info mb-3"></i> 
-                        <h4 class="text-info">{{ $jumlahKasir }} Kasir</h4> 
-                    </div>
-                    <div class="card-footer bg-primary">
-                        <a href="{{ route('kassir.index') }}" class="text-white fw-bold">Kelola Kasir</a>
-                    </div>
-                </div>
-
-                <!-- TOTAL SELURUH TRANSAKSI (Hanya untuk Admin) -->
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Pendapatan Seluruh Transaksi</h5>
-                        <h3 class="font-weight-bold text-success">
-                            Rp {{ number_format($totalPendapatan, 0, ',', '.') }}
-                        </h3>
-                    </div>
-                </div>
-            @endif
-        </div>
-    </div>
+                  <div class="card-body p-4">
+                      <div class="table-responsive">
+                          <table class="table table-sm table-hover mb-0">
+                              <thead class="thead-light">
+                                  <tr>
+                                      <th>Nama</th>
+                                      <th>Email</th>
+                                      <th style="width: 150px;">Aksi</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  @foreach ($inactiveUsers as $user)
+                                      <tr>
+                                          <td>{{ $user->name }}</td>
+                                          <td>{{ $user->email }}</td>
+                                          <td class="text-center">
+                                              <form method="POST" action="{{ route('admin.users.activate', $user->id) }}">
+                                                  @csrf
+                                                  @method('PUT')
+                                                  <button type="submit" class="btn btn-sm btn-success">
+                                                      <i class="fas fa-check-circle"></i> Aktifkan
+                                                  </button>
+                                              </form>
+                                          </td>
+                                      </tr>
+                                  @endforeach
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          @endif
+      </div>
+  </div>
 </div>
 
 <!-- SCRIPT GRAFIK PENJUALAN -->
 @if(Auth::user()->role === 'admin')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var labels = @json($labels);
-        var data = @json($data);
+  document.addEventListener("DOMContentLoaded", function() {
+      var labels = @json($labels);
+      var data = @json($data);
 
-        console.log("Labels:", labels);
-        console.log("Data:", data);
+      console.log("Labels:", labels);
+      console.log("Data:", data);
 
-        var ctx = document.getElementById('chartPenjualan').getContext('2d');
-        var chartPenjualan = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Total Pendapatan per Bulan',
-                    data: data,
-                    backgroundColor: 'rgba(93, 135, 255, 0.7)',
-                    borderColor: 'rgba(93, 135, 255, 1)',
-
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-    });
+      var ctx = document.getElementById('chartPenjualan').getContext('2d');
+      var chartPenjualan = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Total Pendapatan per Bulan',
+                  data: data,
+                  backgroundColor: 'rgba(93, 135, 255, 0.7)',
+                  borderColor: 'rgba(93, 135, 255, 1)',
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                  y: { beginAtZero: true }
+              }
+          }
+      });
+  });
 </script>
 @endif
+
+
+
 
 
 

@@ -20,6 +20,11 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['admin', 'user'])->default('user');  // Menggunakan enum untuk role 'admin' dan 'user'
             $table->string('password');
+            $table->string('alamat'); // kolom alamat
+            $table->string('no_telp'); // kolom nomor telepon
+            $table->enum('status', ['bekerja', 'tidak bekerja'])->default('bekerja','tidak bekerja'); // kolom stat
+            $table->boolean('is_active')->default(false); // true artinya masih aktif
+
             $table->rememberToken();
             $table->timestamps();
         });

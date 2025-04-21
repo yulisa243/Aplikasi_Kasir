@@ -155,22 +155,30 @@
         value="{{ auth()->user()->name ?? '' }}" readonly>
 </div>
 
-<div class="form-group">
-    <label for="PelangganID">Pelanggan:</label>
-    <select name="PelangganID" id="PelangganID" class="form-control select2">
-        <option value="">-- Pilih Pelanggan --</option>
-        @foreach ($pelanggans as $pelanggan)
-            <option value="{{ $pelanggan->PelangganID }}">{{ $pelanggan->NamaPelanggan }}</option>
-        @endforeach
-    </select>
+<div class="form-group row">
+    <div class="col-md-6">
+        <label for="PelangganID">Pelanggan:</label>
+        <select name="PelangganID" id="PelangganID" class="form-control select2">
+            <option value="">-- Pilih Pelanggan --</option>
+            @foreach ($pelanggans as $pelanggan)
+                <option value="{{ $pelanggan->PelangganID }}">
+                    {{ $pelanggan->NamaPelanggan }} - {{ $pelanggan->Notelp }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+
+
 </div>
-
-
-    <!-- Form input untuk tanggal penjualan -->
 <div class="form-group">
     <label for="TanggalPenjualan">Tanggal Penjualan</label>
-    <input type="date" name="TanggalPenjualan" class="form-control" value="{{ old('TanggalPenjualan') }}">
+    <input type="text" name="TanggalPenjualan" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}" readonly>
 </div>
+
+
+
+
 
 <div id="produkContainer">
     <div class="form-row mb-3 produk-entry">
@@ -179,11 +187,12 @@
             <select name="ProdukID[]" class="form-control produkSelect" required>
                 <option value="">--</option>
                 @foreach ($produks as $produk)
-                    <option value="{{ $produk->ProdukID }}" 
-                            data-harga="{{ $produk->Harga }}" 
-                            data-stok="{{ $produk->Stok }}">
-                        {{ $produk->NamaProduk }}
-                    </option>
+                <option value="{{ $produk->ProdukID }}" 
+                    data-harga="{{ $produk->Harga }}" 
+                    data-stok="{{ $produk->Stok }}">
+                {{ $produk->NamaProduk }} - Stok: {{ $produk->Stok }}
+            </option>
+            
                 @endforeach
             </select>
         </div>

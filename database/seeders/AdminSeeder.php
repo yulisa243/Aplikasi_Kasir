@@ -22,6 +22,8 @@ class AdminSeeder extends Seeder
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('12345678'), // Gantilah dengan password yang lebih kuat
                 'role' => 'admin', // Menambahkan role admin
+                'alamat' => '',  // Memberikan nilai default kosong
+                'no_telp' => '', // Memberikan nilai default kosong
             ]);
         }
     }

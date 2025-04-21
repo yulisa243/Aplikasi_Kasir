@@ -82,7 +82,7 @@
 
 <!-- Banner Section -->
 <div class="d-flex flex-column align-items-center justify-content-center text-center" style="min-height: 80vh; padding: 20px;">
-    <h4 class="fw-bold text-dark" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">Savelle Store – Solusi Kasir Modern</h4>
+    <h4 class="fw-bold text-dark" style="font-size: 2.5rem; font-family: 'Poppins', sans-serif;">Savelle Store – Aplikasi Kasir Modern</h4>
     <p class="text-secondary" style="font-size: 1rem; max-width: 600px; font-family: 'Poppins', sans-serif;">
         Kelola transaksi, stok, dan laporan keuangan dengan mudah dan efisien menggunakan Savelle Store.
     </p>

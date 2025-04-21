@@ -1,39 +1,37 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+
 
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+            {{ __('Lupa kata sandi? Masukkan email Anda, dan kami akan mengirimkan tautan untuk mereset kata sandi.') }}
         </div>
 
-        @if (session('status') == 'verification-link-sent')
+        <!-- Session Status -->
+        @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+                {{ session('status') }}
             </div>
         @endif
 
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
-                </div>
-            </form>
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            <!-- Email Address -->
+            <div>
+                <x-label for="email" :value="__('Email')" />
 
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Logout') }}
-                </button>
-            </form>
-        </div>
-    </x-auth-card>
-</x-guest-layout>
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            </div>
+
+            <div class="flex items-center justify-between mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                    {{ __('Kembali ke halaman login') }}
+                </a>
+
+                <x-button>
+                    {{ __('Kirim tautan reset kata sandi') }}
+                </x-button>
+            </div>
+        </form>
+

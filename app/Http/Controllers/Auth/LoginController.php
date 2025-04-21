@@ -36,7 +36,16 @@ class LoginController extends Controller
         return redirect()->back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
+    protected function authenticated(Request $request, $user)
+    {
+        // Periksa apakah status pekerjaan pengguna adalah 'tidak bekerja'
+        if ($user->status == 'tidak bekerja') {
+            Auth::logout();  // Keluar dari sesi login
+            return redirect()->route('login')->withErrors(['status' => 'Akun Anda tidak aktif, harap hubungi administrator.']);
+        }
 
+        return redirect()->intended($this->redirectPath());
+    }
 
     public function logout(Request $request)
     {

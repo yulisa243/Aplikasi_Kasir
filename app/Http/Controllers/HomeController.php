@@ -76,9 +76,11 @@ for ($i = 1; $i <= 12; $i++) {
 
 $profile = Profile::first();
 
+$inactiveUsers = User::where('is_active', false)
+                    ->where('role', '!=', 'admin') // Hanya selain admin
+                    ->get();
 
-
-    return view('home', compact('produkStokRendah', 'produkKedaluwarsa','transaksiTerakhir','kasir','jumlahKasir','bestSellers','labels', 'data','totalPendapatan','profile','hariIni'));
+    return view('home', compact('produkStokRendah', 'produkKedaluwarsa','transaksiTerakhir','kasir','jumlahKasir','bestSellers','labels', 'data','totalPendapatan','profile','hariIni','inactiveUsers'));
 }
 }
 

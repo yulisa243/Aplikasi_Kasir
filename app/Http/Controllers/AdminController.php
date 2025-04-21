@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -12,5 +13,15 @@ class AdminController extends Controller
     
     return view('admin.dashboard', compact('expiringProducts'));
 }
+
+public function activateUser($id)
+{
+    $user = User::findOrFail($id);
+    $user->is_active = true;
+    $user->save();
+
+    return redirect()->back()->with('success', 'User berhasil diaktifkan.');
+}
+
 
 }

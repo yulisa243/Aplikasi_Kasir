@@ -9,7 +9,11 @@ class Detail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['JumlahProduk',  'PenjualanID', 'ProdukID'];
+    protected $fillable = [
+        'JumlahProduk',  
+        'PenjualanID', 
+        'ProdukID'
+    ];
 
     public function penjualan()
     {

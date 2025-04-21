@@ -95,6 +95,18 @@
                 <input type="password" name="password_confirmation" class="form-control" placeholder="Konfirmasi Password" required autocomplete="new-password">
             </div>
 
+            <!-- Tambahan input untuk Alamat -->
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-map-marker-alt"></i></span>
+                <input type="text" name="alamat" class="form-control" placeholder="Alamat" required>
+            </div>
+
+            <!-- Tambahan input untuk Nomor Telepon -->
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                <input type="text" name="no_telp" class="form-control" placeholder="Nomor Telepon" required>
+            </div>
+
             <button type="submit">Registrasi</button>
         </form>
     </div>

@@ -47,7 +47,7 @@
                 <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="text-center">
-                        <<img src="{{ optional($profile)->logo ? asset('storage/' . $profile->logo) : asset('images/default-logo.png') }}"
+                        <img src="{{ optional($profile)->logo ? asset('storage/' . $profile->logo) : asset('images/default-logo.png') }}"
                         alt="Logo Toko" class="profile-img">
                    
                     </div>

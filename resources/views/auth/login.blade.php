@@ -85,9 +85,23 @@
     </style>
 </head>
 <body>
+
+
     <div class="auth-box" id="loginBox">
         <h3>Login</h3>
-        <form action="/login" method="POST">
+    
+        <!-- Menampilkan error jika login gagal -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    
+        <form method="POST" action="{{ route('login') }}">
             @csrf
             <div class="input-group">
                 <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
@@ -98,8 +112,13 @@
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
             </div>
             <button type="submit" class="btn btn-custom">Login</button>
+            <div class="mt-3">
+                <a href="{{ route('password.request') }}" class="toggle-link">Lupa Password?</a>
+            </div>
+        </div>
         </form>
     </div>
+    
 
     <div class="auth-box hidden" id="registerBox">
         <h3>Registrasi</h3>
@@ -113,6 +132,8 @@
         </form>
     </div>
 
+
+    
     <script>
         function toggleAuth(showId) {
             document.getElementById('loginBox').classList.add('hidden');

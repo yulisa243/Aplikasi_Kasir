@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Mail\RegistrasiBerhasilMail; // Make sure this is imported
+use Illuminate\Support\Facades\Mail; // Make sure this is imported
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
+
+
+    
     /**
      * Menampilkan form registrasi.
      *
@@ -27,28 +33,46 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function register(Request $request)
-    {
-        // Validasi input pengguna
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255', // Nama pengguna wajib diisi dan maksimal 255 karakter
-            'email' => 'required|email|unique:users,email', // Email wajib diisi dan harus unik
-            'password' => 'required|string|min:6|confirmed', // Password wajib diisi, minimal 6 karakter dan konfirmasi password
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:6|confirmed',
+        'alamat' => 'required|string|max:255',  // Validasi alamat
+            'no_telp' => 'required|string|max:15',  // Validasi no_telp
+    ]);
 
-        // Jika validasi gagal, kembali ke form registrasi dengan pesan error
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        // Proses penyimpanan pengguna baru ke dalam database
-        User::create([
-            'name' => $request->name, // Menyimpan nama
-            'email' => $request->email, // Menyimpan email
-            'password' => Hash::make($request->password), // Menyimpan password yang sudah di-hash
-            'role' => 'user', // Memberikan role default sebagai 'user', bisa disesuaikan
-        ]);
-
-        // Redirect ke halaman login setelah registrasi berhasil
-        return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login.');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'user',
+        'alamat' => $request->alamat,
+        'no_telp' => $request->no_telp,
+        'status' => 'bekerja',
+        'is_active' => false, // <--- ini penting
+    ]);
+    
+
+    // Kirim email notifikasi registrasi
+    Mail::to($user->email)->send(new RegistrasiBerhasilMail($user));
+
+    return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan cek email Anda.');
+}
+
+
+protected function create(array $data)
+{
+    return User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        'is_active' => false, // akun belum aktif
+    ]);
+}
+
 }

@@ -68,8 +68,9 @@ class PenjualanController extends Controller
             'Kasir' => 'required|string',
             'JumlahProduk.*' => 'numeric|min:1',
             'Pembayaran' => 'required|numeric|min:0',
-            'TanggalPenjualan' => 'required|date',  // Pastikan validasi tanggal ada
+            'TanggalPenjualan' => 'required|date',  // Tetap pastikan validasi tanggal ada
         ]);
+            
         
         $totalHarga = 0;
         $penjualanDetail = [];

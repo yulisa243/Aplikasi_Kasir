@@ -22,7 +22,7 @@ class CreatePenjualansTable extends Migration
             $table->unsignedBigInteger('ProdukID');
             $table->decimal('Pembayaran', 10,2);
             $table->decimal('Kembalian', 10,2);
-
+            $table->enum('StatusMember', ['member', 'non-member'])->default('non-member');
             $table->softDeletes();
             
             $table->timestamps();

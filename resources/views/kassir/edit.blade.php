@@ -63,14 +63,32 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-3">
-                    <label for="name" class="form-label">Nama Kasir</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ old('nama', $kasir->name) }}" required>
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $kasir->name) }}" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                <div class="form-group">
+                    <label for="email">Email</label>
                     <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $kasir->email) }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <textarea class="form-control" id="alamat" name="alamat">{{ old('alamat', $kasir->alamat) }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="no_telp">No Telepon</label>
+                    <input type="text" class="form-control" id="no_telp" name="no_telp" value="{{ old('no_telp', $kasir->no_telp) }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status Pekerjaan</label>
+                    <select class="form-control" id="status" name="status">
+                        <option value="bekerja" {{ $kasir->status == 'bekerja' ? 'selected' : '' }}>Bekerja</option>
+                        <option value="tidak bekerja" {{ $kasir->status == 'tidak bekerja' ? 'selected' : '' }}>Tidak Bekerja</option>
+                    </select>
                 </div>
 
                 <div class="form-group d-flex justify-content-start flex-wrap">

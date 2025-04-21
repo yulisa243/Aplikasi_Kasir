@@ -1,5 +1,4 @@
-@extends('admin.template')
-
+@extends('layout_admin.sidebar')
 
 <!DOCTYPE html>
 <html lang="id">
@@ -49,29 +48,35 @@
         }
 
         /* Menentukan gaya header tabel agar tetap terlihat dengan jelas */
-.content-wrapper .table th {
-    background-color: #5d87ff; /* Warna latar belakang */
-    color: white; /* Warna teks */
-    text-align: center; /* Menyelaraskan teks di tengah */
-}
+        .content-wrapper .table th {
+            background-color: #5d87ff; /* Warna latar belakang */
+            color: white; /* Warna teks */
+            text-align: center; /* Menyelaraskan teks di tengah */
+        }
 
-/* Menambahkan gaya hover untuk baris */
-.content-wrapper .table tbody tr:hover {
-    background-color: #e0eaff; /* Warna saat hover pada baris tabel */
-}
+        /* Menambahkan gaya hover untuk baris */
+        .content-wrapper .table tbody tr:hover {
+            background-color: #e0eaff; /* Warna saat hover pada baris tabel */
+        }
 
-.btn-danger {
-    background-color: #dc3545 !important; /* Warna merah Bootstrap */
-    border-color: #dc3545 !important;
-    color: white !important;
-}
+        .btn-danger {
+            background-color: #dc3545 !important; /* Warna merah Bootstrap */
+            border-color: #dc3545 !important;
+            color: white !important;
+        }
 
-.btn-danger:hover {
-    background-color: #c82333 !important; /* Warna merah lebih gelap saat hover */
-    border-color: #bd2130 !important;
-}
+        .btn-danger:hover {
+            background-color: #c82333 !important; /* Warna merah lebih gelap saat hover */
+            border-color: #bd2130 !important;
+        }
 
+        .status-bekerja {
+            color: green;
+        }
 
+        .status-tidak-bekerja {
+            color: red;
+        }
 
     </style>
 </head>
@@ -95,10 +100,10 @@
         @endif
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title text-center">Daftar kasir</h5>
-                <div class="row mb-3">
+                <h5 class="card-title text-center">Daftar Kasir</h5>
 
-                </div>
+
+                <div class="row mb-3"></div>
                 <div class="table-container">
                     <table class="table table-bordered table-striped">
                         <thead class="thead-blue">
@@ -106,6 +111,10 @@
                             <th>No</th>
                             <th>Nama</th>
                             <th>Email</th>
+                            <th>Alamat</th>
+                            <th>No Telepon</th>
+                            <th>Status Pekerjaan</th>
+                            <th>Tanggal Mulai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -115,31 +124,54 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $k->name }}</td>
                             <td>{{ $k->email }}</td>
+                            <td>{{ $k->alamat }}</td>
+                            <td>{{ $k->no_telp }}</td>
                             <td>
-    <div class="btn-group">
-        <a href="{{ route('kassir.edit', $k->id) }}" class="btn btn-warning btn-sm mr-2" title="Edit">
-            <i class="fas fa-edit"></i>
-        </a>
-        <!-- Tombol Hapus -->
-        <form action="{{ route('kassir.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Data Ini Akan Dihapus?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </form>
-    </div>
-                               
-</td>
-
-                                </tr>
-                            @endforeach
-                        </tbody>
+                                @if($k->is_active)
+                                    @if($k->status == 'bekerja')
+                                        <span class="status-bekerja">Bekerja sejak {{ $k->created_at ? $k->created_at->format('d-m-Y') : 'Tanggal tidak tersedia' }}</span>
+                                    @else
+                                        <span class="status-tidak-bekerja">Tidak Bekerja sejak {{ $k->created_at ? $k->created_at->format('d-m-Y') : 'Tanggal tidak tersedia' }}</span>
+                                    @endif
+                                @else
+                                    <span class="text-warning">Akun belum diaktifkan</span>
+                                @endif
+                            </td>
+                            
+                            <td>{{ $k->created_at->format('d-m-Y') }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <!-- Tombol Edit -->
+                                    <a href="{{ route('kassir.edit', $k->id) }}" class="btn btn-warning btn-sm mr-2" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    
+                                    <!-- Tombol Show / Detail -->
+                                    <a href="{{ route('kassir.show', $k->id) }}" class="btn btn-info btn-sm mr-2" title="Show">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                            
+                                    <!-- Tombol Hapus -->
+                                    <form action="{{ route('kassir.destroy', $k->id) }}" method="POST" onsubmit="return confirm('Apakah Data Ini Akan Dihapus?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        @endforeach
+                    </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

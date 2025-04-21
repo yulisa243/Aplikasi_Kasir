@@ -10,7 +10,11 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $table = 'transaksi'; // Laravel otomatis menangani pluralisasi
-    protected $fillable = ['PelangganID', 'TotalHarga', 'status']; // Sesuaikan dengan kolom di database
+    protected $fillable = [
+        'PelangganID', 
+        'TotalHarga', 
+        'status'
+    ]; // Sesuaikan dengan kolom di database
 
     // Relasi ke tabel pelanggan
     public function pelanggan()
